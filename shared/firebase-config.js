@@ -11,20 +11,30 @@
  * 4. Scroll down to "Your apps" > Web app > Firebase SDK snippet
  */
 
+// shared/firebase.js
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+// Din config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCj1HA3GdmlGKk-3-RBDSts67LUBHZ5ooM",
+  authDomain: "nobel-quest.firebaseapp.com",
+  projectId: "nobel-quest",
+  storageBucket: "nobel-quest.firebasestorage.app",
+  messagingSenderId: "331208112174",
+  appId: "1:331208112174:web:88a60b05a2c1906172c7bf"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// Export Firebase instances for use in other modules
-window.firebaseAuth = firebase.auth();
-window.firebaseDb = firebase.firestore();
+// Auth och Firestore
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-console.log('✅ Firebase initialized successfully');
+// Google provider
+const provider = new GoogleAuthProvider();
+
+// Exportera för användning i andra filer
+export { app, auth, db, provider, signInWithPopup, signOut };
