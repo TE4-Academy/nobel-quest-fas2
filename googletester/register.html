@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrera</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Skapa konto</h2>
+
+    <input type="email" id="email" placeholder="E-post" required>
+    <input type="password" id="password" placeholder="Lösenord" required>
+
+    <button id="registerBtn">Registrera</button>
+
+    <a href="../shared/components/login.html">Har du ett konto? Logga in här</a>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD_rYe_EMMxlIQ1CLzVly9UtfVROLwawpQ",
+        authDomain: "te4-nobelquest.firebaseapp.com",
+        projectId: "te4-nobelquest",
+        storageBucket: "te4-nobelquest.firebasestorage.app",
+        messagingSenderId: "1067428082128",
+        appId: "1:1067428082128:web:a53068bd2ae98bb9c489d5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("registerBtn").addEventListener("click", () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                alert("Konto skapat!");
+                window.location.href = "../apps/demo-game/menu.html";
+            })
+            .catch(err => alert(err.message));
+    });
+</script>
+
+</body>
+</html>
