@@ -42,6 +42,9 @@ window.addEventListener("DOMContentLoaded", () => {
     game.gaveUp = true;
     stopTimer();
     showEndScreen();
+    //Leaderboard
+    const currentScore = game.score; 
+    submitScore("LB-match", Math.round(currentScore));
   };
 
   document.getElementById("giveUpBtn").onclick = openGiveUpModal;

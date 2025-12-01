@@ -1,3 +1,5 @@
+import { submitScore } from "../leaderboard/leaderboardManager.js";
+
 const game = {
   cards: [],
   flippedCards: [],
@@ -103,6 +105,11 @@ function checkMatch() {
     // Kolla om spelet är klart
     if (game.matches === game.pairsNeeded) {
       stopTimer();
+
+      // Skicka poäng till leaderboard
+      const scoreToSubmit = Math.round(game.score); // Använder den globala game.score
+      submitScore("LB-match", scoreToSubmit);
+    
       gameSound.win.currentTime = 0;
       gameSound.win.play().catch((e) => console.log("Win-ljud fel:", e));
 
