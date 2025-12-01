@@ -1,74 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Leaderboard</title>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topplista - Nobel Quest</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-[#0b1e39] text-white" data-page-title="Topplista">
-    <div id="app-header"></div>
+</head>
+<body class="bg-[#0b1e39]" style="display: flex; flex-direction: column; min-height: 100vh;">
+    
+    <!-- Header -->
+    <div id="header-container"></div>
 
-        <!-- DROPDOWN -->
-     <script>
-     function toggleMenu() {
-      document.getElementById("dropdownMenu").classList.toggle("hidden");
-      }
-      </script>
-
-      <!-- HALVGRÅ BAKGRUND STYLING -->
-      <div class="max-w-2xl mx-auto p-4">
-      <div class="mb-4 text-[#C5A572]">
-      </div>
-      <div class="bg-[#142844] p-6 rounded-lg shadow mb-4">
-
-    <!-- GAME-SPECIFIC CONTENT: Global Leaderboard -->
-<div class="mb-6 max-w-2xl mx-auto p-6 bg-[#C5A572] rounded-lg shadow text-[#0b1e39]">
-  <h2 class="text-2xl font-bold mb-4">Alla spel - Topplista</h2>
-  <ol class="list-decimal ml-6 space-y-2">
-    <li>Player 1 - 1000 pts</li>
-    <li>Player 2 - 950 pts</li>
-    <li>Player 3 - 900 pts</li>
-  </ol>
-</div>
-
-    <!-- GAME-SPECIFIC CONTENT: Nobel Timeline -->
-<div class="mb-6 max-w-2xl mx-auto p-6 bg-[#C5A572] rounded-lg shadow text-[#0b1e39]">
-  <h2 class="text-2xl font-bold mb-4">Nobel Timeline - Topplista</h2>
-  <ol class="list-decimal ml-6 space-y-2">
-    <li>Player 1 - 1000 pts</li>
-    <li>Player 2 - 950 pts</li>
-    <li>Player 3 - 900 pts</li>
-  </ol>
-</div>
-
-        <!-- GAME-SPECIFIC CONTENT: Nobel Match Master -->
-         <div class="mb-6 max-w-2xl mx-auto p-6 bg-[#C5A572] rounded-lg shadow text-[#0b1e39]">
-  <h2 class="text-2xl font-bold mb-4">Nobel Match Master - Topplista</h2>
-  <ol class="list-decimal ml-6 space-y-2">
-    <li>Player 1 - 1000 pts</li>
-    <li>Player 2 - 950 pts</li>
-    <li>Player 3 - 900 pts</li>
-  </ol>
-</div>
-
-        <!-- GAME-SPECIFIC CONTENT: Nobel Trivia Rush -->
-<div class="max-w-2xl mx-auto p-6 bg-[#C5A572] rounded-lg shadow text-[#0b1e39]">
-  <h2 class="text-2xl font-bold mb-4">Nobel Trivia Rush - Topplista</h2>
-  <ol class="list-decimal ml-6 space-y-2">
-    <li>Player 1 - 1000 pts</li>
-    <li>Player 2 - 950 pts</li>
-    <li>Player 3 - 900 pts</li>
-  </ol>
-</div>
-    </div>
+    <!-- Main Content -->
+    <main id="app" class="game-container px-2 pb-8" style="flex: 1;">
+        
+        <!-- Nobel Timeline Leaderboard -->
+        <div class="mb-6 max-w-4xl mx-auto">
+            <div class="bg-[#142844] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="bg-gradient-to-r from-[#C5A572] to-[#b08f57] p-4">
+                    <h2 class="text-2xl font-bold text-[#0b1e39] text-center">
+                        🏆 Nobel Timeline
+                    </h2>
+                    <p class="text-center text-[#142844] text-sm mt-1">Top 15 Spelare</p>
+                </div>
+                
+                <div class="p-4">
+                    <div id="nobel-timeline-leaderboard" class="space-y-2">
+                        <div class="text-center py-8">
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-[#C5A572] border-t-transparent"></div>
+                            <p class="text-white/60 mt-2">Laddar topplista...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div id="app-footer"></div>
+        <!-- Placeholder för andra spel -->
+        <div class="space-y-6 max-w-4xl mx-auto">
+            <div class="bg-[#142844] rounded-2xl overflow-hidden shadow-2xl opacity-50">
+                <div class="bg-gradient-to-r from-[#C5A572] to-[#b08f57] p-4">
+                    <h2 class="text-xl font-bold text-[#0b1e39] text-center">Nobel Match Master</h2>
+                    <p class="text-center text-[#142844] text-sm">Kommer snart</p>
+                </div>
+            </div>
 
-    <script src="/shared/js/load-components.js"></script>
-    <script src="/shared/js/auth-check.js"></script>
-  </body>
+            <div class="bg-[#142844] rounded-2xl overflow-hidden shadow-2xl opacity-50">
+                <div class="bg-gradient-to-r from-[#C5A572] to-[#b08f57] p-4">
+                    <h2 class="text-xl font-bold text-[#0b1e39] text-center">Nobel Trivia Rush</h2>
+                    <p class="text-center text-[#142844] text-sm">Kommer snart</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Load Components -->
+    <script>
+        // Ladda header
+        fetch('../shared/components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+
+        // Ladda footer
+        fetch('../shared/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+    </script>
+
+    <script type="module">
+        import { getTopScores } from '../apps/timeline/leaderboard.js';
+        
+        async function loadLeaderboard() {
+            const container = document.getElementById('nobel-timeline-leaderboard');
+            
+            try {
+                const scores = await getTopScores(15);
+                
+                if (scores.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-white/60">
+                            <p class="text-lg">Inga resultat ännu</p>
+                            <p class="text-sm mt-2">Var först att sätta ett rekord! 🎯</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = scores.map((score, index) => {
+                    const position = index + 1;
+                    const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : '';
+                    const highlight = position <= 3 ? 'bg-[#C5A572]/20 border-[#C5A572]' : 'bg-[#243D5E] border-transparent';
+                    
+                    return `
+                        <div class="flex items-center gap-3 p-3 rounded-xl border-2 ${highlight} transition hover:scale-[1.02]">
+                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center font-bold text-lg ${position <= 3 ? 'text-[#C5A572]' : 'text-white/60'}">
+                                ${medal || position}
+                            </div>
+                            
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold truncate text-sm md:text-base">
+                                    ${score.email}
+                                </p>
+                                <p class="text-white/50 text-xs">
+                                    ${score.correctCount}/${score.total} rätt • ${score.timeLeft}s kvar
+                                </p>
+                            </div>
+                            
+                            <div class="flex-shrink-0 text-right">
+                                <p class="text-[#C5A572] font-bold text-lg md:text-xl">
+                                    ${score.score}
+                                </p>
+                                <p class="text-white/40 text-xs">poäng</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Fel vid laddning:', error);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-400">
+                        <p>Kunde inte ladda topplistan</p>
+                        <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-[#C5A572] text-[#0b1e39] rounded-lg">
+                            Försök igen
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        loadLeaderboard();
+    </script>
+</body>
 </html>

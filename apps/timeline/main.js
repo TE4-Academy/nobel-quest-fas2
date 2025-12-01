@@ -11,13 +11,12 @@ import { saveLastScore } from "./storage.js";
 import { gameState } from "./game2.js";
 import { startTimer } from "./game2.js";
 import { stopTimer } from "./game2.js";
-
+import { saveScoreToFirebase } from "./leaderboard.js";
 
 // huvudelementet där spelet ritas upp
 const app = document.getElementById("app");
 // visa startskärmen
 renderStart(app);
-// visa leaderboard direkt när sidan laddas
 
 // ladda nobeldata i bakgrunden
 loadNobelData().then((list) => console.log("Antal pristagare:", list.length));
@@ -55,23 +54,38 @@ document.addEventListener("difficulty:selected", async (e) => {
 
     // beräkna poäng och hur många som är rätt
     const { score, correctCount } = submitAndScore(order);
-    saveLastScore({ score, correctCount, total: pool.length, ts: Date.now() });
-
-    // hämta in namn från fältet ovanför spelet
-    const playerName = "Anonym";
 
     // bygg upp ett resultatobjekt som sparas på leaderboarden
     const entry = {
-      name: playerName,
+      name: "Anonym",
       score: Math.round(score),
       correctCount,
       total: pool.length,
       timeLeft: gameState.timeLeft,
       ts: Date.now(),
     };
+
+    // Spara lokalt OCH till Firebase
+    saveLastScore({ score, correctCount, total: pool.length, ts: Date.now() });
+    saveScoreToFirebase(entry);
+
+    // Kolla om spelaren hamnade på topp 15
+    setTimeout(async () => {
+      const { getTopScores } = await import("./leaderboard.js");
+      const topScores = await getTopScores(15);
+      const userEmail = localStorage.getItem('userEmail');
+      const playerRank = topScores.findIndex(s => s.email === userEmail && Math.abs(s.score - entry.score) < 10) + 1;
+  
+      if (playerRank > 0 && playerRank <= 15) {
+        const rankText = document.createElement('p');
+        rankText.className = 'text-[#76DB7E] font-bold text-xl text-center mt-4 animate-pulse';
+        rankText.textContent = `🎉 Du är på plats ${playerRank} på topplistan! 🎉`;
+        document.querySelector('.text-center').appendChild(rankText);
+      }
+    }, 1000);
+
     // stoppa timern nu när rundan är klar
     stopTimer();
-
 
     // skapa en snabb uppslagskarta från id till pristagare
     const laureateMap = {};
@@ -128,7 +142,6 @@ document.addEventListener("difficulty:selected", async (e) => {
 
      `;
 
-    // lägg till ett kort i resultatlistan för varje placerad pristagare
     // lägg till ett kort i resultatlistan för varje placerad pristagare
     order.forEach((placedId, index) => {
       const laureate = laureateMap[placedId];
@@ -212,7 +225,6 @@ document.addEventListener("difficulty:selected", async (e) => {
 
     const userOrderEl = app.querySelector("#user-order");
     const correctOrderEl = app.querySelector("#correct-order");
-    const orderTitle = app.querySelector("#order-title");
 
     const userOrderBtn = app.querySelector("#btn-user-order");
     const correctOrderBtn = app.querySelector("#btn-correct-order");
